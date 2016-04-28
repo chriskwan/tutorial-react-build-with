@@ -13,10 +13,22 @@ var Board = React.createClass({
 });
 
 var BoardSwitcher = React.createClass({
+  getInitialState: function() {
+  	return {
+  	  selectedIndex: 0
+  	};
+  },
+
+  toggleBoard: function() {
+  	this.setState({
+  		selectedIndex: (this.state.selectedIndex + 1) % this.props.numBoards
+  	});
+  },
+
   render: function() {
     var boards = [];
     for (var ii = 0; ii < this.props.numBoards; ii++) {
-      var isSelected = ii === 0;
+      var isSelected = ii === this.state.selectedIndex;
       boards.push(
         <Board index={ii} selected={isSelected} key={ii} />
       );
@@ -25,7 +37,7 @@ var BoardSwitcher = React.createClass({
     return (
       <div>
         <div className="boards">{boards}</div>
-        <button>Toggle</button>
+        <button onClick={this.toggleBoard}>Toggle</button>
       </div>
     );
   }
